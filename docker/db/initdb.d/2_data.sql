@@ -12,9 +12,9 @@ VALUES (47, 4, 'Excellent', '2019-02-18 22:35:54');
 INSERT INTO survey(age, satisfaction, comment, created)
 VALUES (47, 4, 'Excellent', '2019-02-18 22:35:54');
 
-INSERT INTO TEST_TBL(username)
+INSERT INTO test_tbl(username)
 values ('test1');
-INSERT INTO TEST_TBL(username)
+INSERT INTO test_tbl(username)
 values ('test2');
-INSERT INTO TEST_TBL(username)
+INSERT INTO test_tbl(username)
 values ('test3');

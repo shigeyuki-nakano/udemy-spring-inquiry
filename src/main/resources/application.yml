@@ -1,7 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test
-    driverClassName: org.h2.Driver
+    url: jdbc:mariadb://localhost/sample
+    driverClassName: org.mariadb.jdbc.Driver
     username: sa
-    password:
-  h2.console.enabled: true
+    password: password
+  sql:
+    init:
+      mode: embedded
+
+  logging:
+    level:
+      root: info

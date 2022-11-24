@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS inquiry;
+DROP TABLE IF EXISTS survey;
+DROP TABLE IF EXISTS test_tbl;
+
+
 CREATE TABLE inquiry
 (
     id       INT          NOT NULL AUTO_INCREMENT,
