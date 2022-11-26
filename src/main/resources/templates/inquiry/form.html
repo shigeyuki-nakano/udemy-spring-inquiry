@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Insert title here</title>
@@ -11,15 +11,15 @@
     更新が完了しました。
 </div>
 <h2 th:text="${complete}"></h2>
-<form action="#" method="post" th:action="@{/inquiry/confirm}" th:object="${inquiryForm}">
+<form action="#" method="post" th:action="@{/inquiry/confirm}" th:object="${inquiryAddRequest}">
     <label for="name">お名前:</label>
-    <input id="name" name="name" type="text"><br>
+    <input id="name" name="name" type="text" th:value="*{name}"><br>
     <div th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
     <label for="email">メール:</label>
-    <input id="email" name="email" type="text"><br>
+    <input id="email" name="email" type="text" th:value="*{email}"><br>
     <div th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
     <label for="contents">詳細　:</label>
-    <textarea cols="40" id="contents" name="contents" rows="3"></textarea><br>
+    <textarea cols="40" id="contents" name="contents" rows="3" th:text="*{contents}"></textarea><br>
     <div th:errors="*{contents}" th:if="${#fields.hasErrors('contents')}"></div>
     <input type="submit" value="確認ページへ">
 

@@ -9,7 +9,7 @@ CREATE TABLE inquiry
     name     VARCHAR(100) NOT NULL,
     email    VARCHAR(100) NOT NULL,
     contents VARCHAR(500) NOT NULL,
-    created  DATETIME     NOT NULL,
+    created  TIMESTAMP,
     PRIMARY KEY (id)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE survey
     age          INT      NOT NULL,
     satisfaction INT      NOT NULL,
     comment      VARCHAR(100),
-    created      DATETIME NOT NULL,
+    created      TIMESTAMP,
     PRIMARY KEY (id)
 );
 

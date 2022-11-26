@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Insert title here</title>
@@ -8,8 +7,8 @@
 <body>
 <h1 th:text="${title}">仮のタイトル</h1>
 <p>入力内容をご確認ください</p>
-<p th:text="${inquiryForm.name}"></p>
-<div th:object="${inquiryForm}">
+<p th:text="${inquiryAddRequest.name}"></p>
+<div th:object="${inquiryAddRequest}">
     <p th:text="*{name}"></p>
     <p th:text="*{email}"></p>
     <p th:text="*{contents}"></p>

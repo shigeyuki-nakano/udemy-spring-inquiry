@@ -1,41 +1,41 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.infrastructure.entity.Inquiry;
-import com.example.demo.infrastructure.repository.InquiryDao;
+import com.example.demo.domain.exception.ResourceNotFoundException;
+import com.example.demo.domain.model.Inquiry;
+import com.example.demo.infrastructure.repository.InquiryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-/*
- * Add an annotation here
+/**
+ * {@inheritDoc}
  */
+@Service
+@RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
-    private final InquiryDao dao;
+    private final InquiryRepository dao;
 
-    public InquiryServiceImpl(InquiryDao dao) {
-        this.dao = dao;
+    @Override
+    @Transactional
+    public void save(Inquiry inquiry) {
+        dao.insertInquiry(inquiry);
     }
 
     @Override
-    public void save(Inquiry inquiry) {
-        //hands-on
-    }
+    @Transactional
+    public void update(Inquiry inquiry) {
+        final var resultCount = dao.updateInquiry(inquiry);
 
-//  This method is used in the latter chapter
-//	@Override
-//	public void update(Inquiry inquiry) {
-//
-//		//return dao.updateInquiry(inquiry);
-//		if(dao.updateInquiry(inquiry) == 0) {
-//			throw new InquiryNotFoundException("can't find the same ID");
-//		}
-//	}
+        if (resultCount == 0) {
+            throw new ResourceNotFoundException("更新対象のお問合せ内容が見つかりませんでした。");
+        }
+    }
 
     @Override
     public List<Inquiry> getAll() {
-
-        //hands-on
-
-        return null;
+        return dao.getAll();
     }
 }
