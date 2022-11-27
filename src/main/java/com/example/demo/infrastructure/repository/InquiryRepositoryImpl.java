@@ -1,12 +1,15 @@
 package com.example.demo.infrastructure.repository;
 
-import com.example.demo.domain.model.Inquiry;
+import com.example.demo.domain.model.inquiry.AddInquiry;
+import com.example.demo.domain.model.inquiry.Inquiry;
+import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.infrastructure.entity.InquiryEntity;
 import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -15,27 +18,36 @@ public class InquiryRepositoryImpl implements InquiryRepository {
 
     private final InquiryJpaRepository inquiryJpaRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void insertInquiry(Inquiry inquiry) {
+    public void insertInquiry(AddInquiry inquiry) {
         final var inquiryEntity = InquiryEntity.of(inquiry);
         inquiryJpaRepository.save(inquiryEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public int updateInquiry(Inquiry inquiry) {
+    public int updateInquiry(UpdateInquiry inquiry) {
         final var inquiryEntity = InquiryEntity.of(inquiry);
-        final var isExists = inquiryJpaRepository.existsById(String.valueOf(inquiryEntity.getId()));
+        final var isExists = inquiryJpaRepository.existsById(inquiryEntity.getId());
 
-        if (isExists) {
+        if (!isExists) {
             return 0;
         }
 
         inquiryJpaRepository.save(inquiryEntity);
-        final var isSuccess = inquiryJpaRepository.existsById(String.valueOf(inquiryEntity.getId()));
+        final var isSuccess = inquiryJpaRepository.existsById(inquiryEntity.getId());
 
         return isSuccess ? 1 : 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Inquiry> getAll() {
         final var result = inquiryJpaRepository.findAll();
@@ -45,4 +57,12 @@ public class InquiryRepositoryImpl implements InquiryRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<Inquiry> getById(int id) {
+        final var result = inquiryJpaRepository.findById(id);
+
+        return result.map(InquiryEntity::convert);
+    }
 }

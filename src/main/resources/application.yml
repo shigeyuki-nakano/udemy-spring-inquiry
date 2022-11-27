@@ -4,10 +4,8 @@ spring:
     driverClassName: org.mariadb.jdbc.Driver
     username: sa
     password: password
-  sql:
-    init:
-      mode: embedded
 
-  logging:
-    level:
-      root: info
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

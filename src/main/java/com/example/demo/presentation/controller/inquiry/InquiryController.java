@@ -1,8 +1,10 @@
 package com.example.demo.presentation.controller.inquiry;
 
-import com.example.demo.domain.model.Inquiry;
+import com.example.demo.domain.model.inquiry.AddInquiry;
+import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.service.InquiryService;
 import com.example.demo.presentation.entity.request.InquiryAddRequest;
+import com.example.demo.presentation.entity.request.InquiryUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.constraints.PositiveOrZero;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,7 +43,20 @@ public class InquiryController {
 
         model
                 .addAttribute("title", "お問合せ");
-        return "inquiry/form";
+        return "inquiry/form/index";
+    }
+
+    @GetMapping("/form/{id}")
+    public String updateForm(
+            @PathVariable("id")
+            @PositiveOrZero Integer id,
+            Model model) {
+        final var inquiry = inquiryService.get(id);
+
+        model
+                .addAttribute("title", "お問合せ")
+                .addAttribute("inquiryUpdateRequest", UpdateInquiry.of(inquiry));
+        return "inquiry/form/update";
     }
 
     @PostMapping("/form")
@@ -45,7 +64,7 @@ public class InquiryController {
         model
                 .addAttribute("title", "お問合せ")
                 .addAttribute("inquiryAddRequest", inquiryAddRequest);
-        return "inquiry/form";
+        return "inquiry/form/index";
     }
 
 
@@ -66,12 +85,22 @@ public class InquiryController {
 
     @PostMapping("/complete")
     public String complete(InquiryAddRequest inquiryAddRequest, Model model) {
-        inquiryService.save(Inquiry.of(inquiryAddRequest));
+        inquiryService.save(AddInquiry.of(inquiryAddRequest));
 
         model
-                .addAttribute("complete", "お問合せ完了");
+                .addAttribute("isComplete", true);
 
-        return "redirect:/inquiry/form";
+        return "redirect:/inquiry";
+    }
+
+    @PutMapping("/complete")
+    public String complete(InquiryUpdateRequest inquiryUpdateRequest, Model model) {
+        inquiryService.update(UpdateInquiry.of(inquiryUpdateRequest));
+
+        model
+                .addAttribute("isComplete", true);
+
+        return "redirect:/inquiry";
     }
 
 }

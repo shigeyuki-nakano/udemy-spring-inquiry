@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Insert title here</title>
@@ -7,6 +7,9 @@
 <body>
 <div th:replace="~{block/header::headerA}"></div>
 <h1 th:text="${title}">仮のタイトル</h1>
+<div th:if="${isComplete}">
+    更新が完了しました。
+</div>
 <table>
     <tr>
         <th>id</th>
@@ -16,7 +19,9 @@
         <th>datetime</th>
     </tr>
     <tr th:each="inquiry : ${inquiryList}">
-        <td th:text="${inquiry.id}">1</td>
+        <td>
+            <a th:href="@{/inquiry/form/{id}(id = ${inquiry.id})}" th:text="${inquiry.id}"></a>
+        </td>
         <td th:text="${inquiry.name}"></td>
         <td th:text="${inquiry.email}"></td>
         <td th:text="${inquiry.contents}"></td>
