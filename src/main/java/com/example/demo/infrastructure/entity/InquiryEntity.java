@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
@@ -21,7 +20,6 @@ import java.util.Objects;
 
 @Entity
 @Data
-@RequiredArgsConstructor
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -2,7 +2,7 @@ package com.example.demo.infrastructure.entity;
 
 import java.time.LocalDateTime;
 
-public class Survey {
+public class SurveyEntity {
 
     private int id;
     private int age;
@@ -10,10 +10,10 @@ public class Survey {
     private String comment;
     private LocalDateTime created;
 
-    public Survey() {
+    public SurveyEntity() {
     }
 
-    public Survey(int id, int age, int satisfaction, String comment, LocalDateTime created) {
+    public SurveyEntity(int id, int age, int satisfaction, String comment, LocalDateTime created) {
         super();
         this.id = id;
         this.age = age;

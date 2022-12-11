@@ -1,19 +1,20 @@
-package com.example.demo.domain.service;
+package com.example.demo.infrastructure.repository;
 
 import com.example.demo.domain.model.survey.AddSurvey;
 import com.example.demo.domain.model.survey.Survey;
 import com.example.demo.domain.model.survey.UpdateSurvey;
 import com.example.demo.domain.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class SurveyServiceImpl implements SurveyService {
+public class SurveyRepositoryImpl implements SurveyRepository {
 
-    private final SurveyRepository surveyRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     /**
      * {@inheritDoc}

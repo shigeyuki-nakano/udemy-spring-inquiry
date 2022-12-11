@@ -1,4 +1,4 @@
-package com.example.demo.domain.service;
+package com.example.demo.domain.repository;
 
 import com.example.demo.domain.model.survey.AddSurvey;
 import com.example.demo.domain.model.survey.Survey;
@@ -6,7 +6,7 @@ import com.example.demo.domain.model.survey.UpdateSurvey;
 
 import java.util.List;
 
-public interface SurveyService {
+public interface SurveyRepository {
 
     /**
      * アンケート一覧を取得する
