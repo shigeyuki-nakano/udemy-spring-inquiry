@@ -11,4 +11,8 @@ public class InquiryAddRequestMockBuilder {
                 .contents("contents")
                 .build();
     }
+
+    public static InquiryAddRequest buildEmpty() {
+        return InquiryAddRequest.builder().build();
+    }
 }

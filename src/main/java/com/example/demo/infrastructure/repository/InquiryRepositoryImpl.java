@@ -3,6 +3,7 @@ package com.example.demo.infrastructure.repository;
 import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
 import com.example.demo.domain.model.inquiry.UpdateInquiry;
+import com.example.demo.domain.repository.InquiryRepository;
 import com.example.demo.infrastructure.entity.InquiryEntity;
 import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,6 @@ public class InquiryRepositoryImpl implements InquiryRepository {
     @Override
     public int updateInquiry(UpdateInquiry inquiry) {
         final var inquiryEntity = InquiryEntity.of(inquiry);
-        final var isExists = inquiryJpaRepository.existsById(inquiryEntity.getId());
-
-        if (!isExists) {
-            return 0;
-        }
 
         inquiryJpaRepository.save(inquiryEntity);
         final var isSuccess = inquiryJpaRepository.existsById(inquiryEntity.getId());

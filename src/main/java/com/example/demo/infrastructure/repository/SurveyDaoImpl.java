@@ -1,5 +1,6 @@
 package com.example.demo.infrastructure.repository;
 
+import com.example.demo.domain.repository.SurveyDao;
 import com.example.demo.infrastructure.entity.Survey;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

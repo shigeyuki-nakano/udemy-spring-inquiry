@@ -4,7 +4,7 @@ import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
 import com.example.demo.domain.model.inquiry.UpdateInquiry;
-import com.example.demo.infrastructure.repository.InquiryRepository;
+import com.example.demo.domain.repository.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,11 +35,10 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     @Transactional
     public void update(UpdateInquiry inquiry) {
-        final var resultCount = repository.updateInquiry(inquiry);
+        repository.getById(inquiry.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("更新対象のお問合せ内容が見つかりませんでした。"));
 
-        if (resultCount == 0) {
-            throw new ResourceNotFoundException("更新対象のお問合せ内容が見つかりませんでした。");
-        }
+        repository.updateInquiry(inquiry);
     }
 
     /**

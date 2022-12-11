@@ -1,8 +1,8 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.domain.exception.InquiryNotFoundException;
+import com.example.demo.domain.repository.SurveyDao;
 import com.example.demo.infrastructure.entity.Survey;
-import com.example.demo.infrastructure.repository.SurveyDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

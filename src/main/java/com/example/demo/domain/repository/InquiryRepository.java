@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.repository;
+package com.example.demo.domain.repository;
 
 import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
