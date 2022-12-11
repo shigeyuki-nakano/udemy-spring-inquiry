@@ -20,7 +20,7 @@ public class Survey {
     int age;
 
     @NotNull
-    int satisfaction;
+    SatisfactionLevels satisfaction;
 
     String comment;
 

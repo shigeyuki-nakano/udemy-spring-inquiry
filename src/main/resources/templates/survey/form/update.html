@@ -7,14 +7,14 @@
 <body>
 <div th:replace="~{block/header::headerA}"></div>
 <h1 th:text="${title}">仮のタイトル</h1>
-<div th:if="${param.complete}">
+<div th:if="${isComplete}">
     更新が完了しました。
 </div>
-<form action="#" method="post" th:action="@{/survey/confirm}" th:object="${surveyForm}">
+<form action="#" method="post" th:action="@{/survey/confirm}" th:object="${surveyUpdateRequest}">
     <label for="age">年齢:</label>
     <input id="age" name="age" th:value="*{age}" type="number"><br>
     <div th:errors="*{age}" th:if="${#fields.hasErrors('age')}"></div>
-    <label for="email">満足度:</label>
+    <label for="satisfaction">満足度:</label>
     <input name="satisfaction" th:checked="*{satisfaction == 1}" type="radio" value="1">1
     <input name="satisfaction" th:checked="*{satisfaction == 2}" type="radio" value="2">2
     <input name="satisfaction" th:checked="*{satisfaction == 3}" type="radio" value="3">3

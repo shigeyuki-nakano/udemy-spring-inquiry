@@ -12,9 +12,11 @@ public class UpdateSurvey {
     @NotNull
     int id;
 
+    @NotNull
     int age;
 
-    int satisfaction;
+    @NotNull
+    SatisfactionLevels satisfaction;
 
     String comment;
 }

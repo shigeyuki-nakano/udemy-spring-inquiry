@@ -94,7 +94,7 @@ public class InquiryController {
     }
 
     @PutMapping("/complete")
-    public String complete(InquiryUpdateRequest inquiryUpdateRequest, Model model) {
+    public String updateComplete(InquiryUpdateRequest inquiryUpdateRequest, Model model) {
         inquiryService.update(UpdateInquiry.of(inquiryUpdateRequest));
 
         model

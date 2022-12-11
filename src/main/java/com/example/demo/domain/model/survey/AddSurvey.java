@@ -13,7 +13,7 @@ public class AddSurvey {
     int age;
 
     @NotNull
-    int satisfaction;
+    SatisfactionLevels satisfaction;
 
     String comment;
 }

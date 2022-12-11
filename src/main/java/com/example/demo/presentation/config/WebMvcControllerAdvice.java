@@ -29,6 +29,6 @@ public class WebMvcControllerAdvice {
     @ExceptionHandler(ResourceNotFoundException.class)
     public String handleException(ResourceNotFoundException e, Model model) {
         model.addAttribute("message", e);
-        return "error/CustomPage";
+        return "error/404";
     }
 }

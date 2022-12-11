@@ -24,6 +24,13 @@ public interface SurveyService {
     Survey getById(int id);
 
     /**
+     * 満足度の平均値を取得する
+     *
+     * @return 満足度平均値
+     */
+    int getSatisfactionAverage();
+
+    /**
      * 指定したアンケートを登録する
      *
      * @param survey 登録したいアンケート

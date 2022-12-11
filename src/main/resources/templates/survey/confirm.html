@@ -8,7 +8,7 @@
 <body>
 <h1 th:text="${title}">title</h1>
 <p>Please check your form</p>
-<div th:object="${surveyForm}">
+<div th:object="${surveyAddRequest}">
     <p>Age:<span th:text="*{age}"></span></p>
     <p>Satisfaction:<span th:text="*{satisfaction}"></span></p>
     <p>Comment:<span th:text="*{comment}"></span></p>
