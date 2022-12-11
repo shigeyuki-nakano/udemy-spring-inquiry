@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Insert title here</title>
+</head>
+<body>
+<div th:replace="~{block/header::headerA}"></div>
+<h1 th:text="${title}">仮のタイトル</h1>
+<form action="#" th:method="put" th:action="@{/inquiry/complete}" th:object="${inquiryUpdateRequest}">
+    <label for="id">ID:</label>
+    <span th:text="*{id}"></span>
+    <input id="id" name="id" type="hidden" th:value="*{id}"><br>
+
+    <div th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+    <label for="name">お名前:</label>
+    <input id="name" name="name" type="text" th:value="*{name}"><br>
+    <div th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+
+    <label for="email">メール:</label>
+    <input id="email" name="email" type="text" th:value="*{email}"><br>
+    <div th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
+
+    <label for="contents">詳細　:</label>
+    <textarea cols="40" id="contents" name="contents" rows="3" th:text="*{contents}"></textarea><br>
+    <div th:errors="*{contents}" th:if="${#fields.hasErrors('contents')}"></div>
+
+    <input type="submit" value="更新する">
+</form>
+</body>
+</html>

@@ -1,41 +1,56 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.infrastructure.entity.Inquiry;
-import com.example.demo.infrastructure.repository.InquiryDao;
+import com.example.demo.domain.exception.ResourceNotFoundException;
+import com.example.demo.domain.model.inquiry.AddInquiry;
+import com.example.demo.domain.model.inquiry.Inquiry;
+import com.example.demo.domain.model.inquiry.UpdateInquiry;
+import com.example.demo.domain.repository.InquiryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-/*
- * Add an annotation here
+/**
+ * {@inheritDoc}
  */
+@Service
+@RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
-    private final InquiryDao dao;
+    private final InquiryRepository repository;
 
-    public InquiryServiceImpl(InquiryDao dao) {
-        this.dao = dao;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void save(Inquiry inquiry) {
-        //hands-on
+    @Transactional
+    public void save(AddInquiry inquiry) {
+        repository.insertInquiry(inquiry);
     }
 
-//  This method is used in the latter chapter
-//	@Override
-//	public void update(Inquiry inquiry) {
-//
-//		//return dao.updateInquiry(inquiry);
-//		if(dao.updateInquiry(inquiry) == 0) {
-//			throw new InquiryNotFoundException("can't find the same ID");
-//		}
-//	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void update(UpdateInquiry inquiry) {
+        repository.getById(inquiry.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("更新対象のお問合せ内容が見つかりませんでした。"));
 
+        repository.updateInquiry(inquiry);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Inquiry> getAll() {
+        return repository.getAll();
+    }
 
-        //hands-on
-
-        return null;
+    public Inquiry get(int id) {
+        return repository.getById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("指定されたお問い合わせが見つかりませんでした"));
     }
 }

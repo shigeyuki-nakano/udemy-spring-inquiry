@@ -1,6 +1,7 @@
 package com.example.demo.infrastructure.repository;
 
 import com.example.demo.domain.model.Sample;
+import com.example.demo.domain.repository.SampleRepository;
 import com.example.demo.infrastructure.repository.jpa.SampleJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
