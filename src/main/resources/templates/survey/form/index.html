@@ -15,11 +15,10 @@
     <input id="age" name="age" th:value="*{age}" type="number"><br>
     <div th:errors="*{age}" th:if="${#fields.hasErrors('age')}"></div>
     <label for="satisfaction">満足度:</label>
-    <input name="satisfaction" th:checked="*{satisfaction == 1}" type="radio" value="1">1
-    <input name="satisfaction" th:checked="*{satisfaction == 2}" type="radio" value="2">2
-    <input name="satisfaction" th:checked="*{satisfaction == 3}" type="radio" value="3">3
-    <input name="satisfaction" th:checked="*{satisfaction == 4}" type="radio" value="4">4
-    <input name="satisfaction" th:checked="*{satisfaction == 5}" type="radio" value="5">5<br>
+    <th:block th:each="i : ${#numbers.sequence(1,5)}">
+        <input id="satisfaction" name="satisfaction" th:checked="*{satisfaction == i}" type="radio" th:value="${i}">i
+    </th:block>
+    <br>
     <div th:errors="*{satisfaction}" th:if="${#fields.hasErrors('satisfaction')}"></div>
     <label for="comment">コメント　:</label>
     <textarea cols="40" id="comment" name="comment" rows="3" th:field="*{comment}"></textarea><br>
