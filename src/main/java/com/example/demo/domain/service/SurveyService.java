@@ -1,48 +1,71 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.domain.model.survey.AddSurvey;
+import com.example.demo.domain.exception.ResourceNotFoundException;
+import com.example.demo.domain.model.survey.SatisfactionLevels;
 import com.example.demo.domain.model.survey.Survey;
-import com.example.demo.domain.model.survey.UpdateSurvey;
+import com.example.demo.domain.repository.SurveyRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
-public interface SurveyService {
+@Service
+@RequiredArgsConstructor
+public class SurveyService {
 
-    /**
-     * アンケート一覧を取得する
-     *
-     * @return アンケート一覧
-     */
-    List<Survey> getAll();
+    private final SurveyRepository surveyRepository;
 
     /**
-     * 指定されたIDのアンケートを取得する
-     *
-     * @param id 取得したいアンケートのID
-     * @return アンケート
+     * {@inheritDoc}
      */
-    Survey getById(int id);
+    public List<Survey> getAll() {
+        return surveyRepository.getAll();
+    }
 
     /**
-     * 満足度の平均値を取得する
-     *
-     * @return 満足度平均値
+     * {@inheritDoc}
      */
-    int getSatisfactionAverage();
+    public Survey getById(int id) {
+        final var survey = surveyRepository.getById(id);
+
+        if (Objects.isNull(survey)) {
+            throw new ResourceNotFoundException("指定されたIDをもつアンケートが見つかりませんでした。 id : " + id);
+        }
+
+        return survey;
+    }
 
     /**
-     * 指定したアンケートを登録する
-     *
-     * @param survey 登録したいアンケート
-     * @return 登録結果
+     * {@inheritDoc}
      */
-    boolean register(AddSurvey survey);
+    public int getSatisfactionAverage() {
+        final var surveyList = surveyRepository.getAll();
+
+        if (surveyList.isEmpty()) {
+            return 0;
+        }
+
+        final var average = surveyList.stream()
+                .map(Survey::getSatisfaction)
+                .mapToInt(SatisfactionLevels::getId)
+                .average()
+                .orElseThrow();
+
+        return (int) Math.floor(average);
+    }
 
     /**
-     * 指定したアンケートを更新する
-     *
-     * @param survey 更新したいアンケート
-     * @return 更新結果
+     * {@inheritDoc}
      */
-    boolean update(UpdateSurvey survey);
+    public void register(Survey survey) {
+        surveyRepository.register(survey);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean update(Survey survey) {
+        return surveyRepository.update(survey);
+    }
 }

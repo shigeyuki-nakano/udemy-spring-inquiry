@@ -42,4 +42,12 @@ public class SurveyEntity {
                 .created(created)
                 .build();
     }
+
+    public static SurveyEntity of(Survey survey) {
+        return SurveyEntity.builder()
+                .age(survey.getAge())
+                .satisfaction(survey.getSatisfaction().getId())
+                .comment(survey.getComment())
+                .build();
+    }
 }

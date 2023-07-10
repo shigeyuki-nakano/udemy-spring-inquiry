@@ -59,7 +59,7 @@ public class SurveyController {
     public String updateForm(
             @PathVariable @PositiveOrZero Integer id,
             Model model) {
-        
+
         final var survey = surveyService.getById(id);
         final var surveyUpdateRequest = SurveyUpdateRequest.of(survey);
 
@@ -99,11 +99,12 @@ public class SurveyController {
     }
 
     @PostMapping("/complete")
-    public String complete(/*Add parameters.*/) {
+    public String complete(SurveyAddRequest surveyAddRequest, Model model) {
+        surveyService.register(surveyAddRequest.convert());
 
-        //hands-on
+        model.addAttribute("isComplete", true);
 
-        return "";
+        return "redirect:/survey";
     }
 
 }

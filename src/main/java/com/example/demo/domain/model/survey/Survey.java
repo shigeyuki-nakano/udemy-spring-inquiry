@@ -1,9 +1,9 @@
 package com.example.demo.domain.model.survey;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -13,17 +13,13 @@ import java.time.LocalDateTime;
 @Builder
 public class Survey {
 
-    @NotNull
     int id;
 
-    @NotNull
-    int age;
+    @NonNull int age;
 
-    @NotNull
-    SatisfactionLevels satisfaction;
+    @NonNull SatisfactionLevels satisfaction;
 
     String comment;
 
-    @NotNull
     LocalDateTime created;
 }

@@ -1,8 +1,6 @@
 package com.example.demo.domain.repository;
 
-import com.example.demo.domain.model.survey.AddSurvey;
 import com.example.demo.domain.model.survey.Survey;
-import com.example.demo.domain.model.survey.UpdateSurvey;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public interface SurveyRepository {
      * @param survey 登録したいアンケート
      * @return 登録結果
      */
-    boolean register(AddSurvey survey);
+    void register(Survey survey);
 
     /**
      * 指定したアンケートを更新する
@@ -37,5 +35,5 @@ public interface SurveyRepository {
      * @param survey 更新したいアンケート
      * @return 更新結果
      */
-    boolean update(UpdateSurvey survey);
+    boolean update(Survey survey);
 }

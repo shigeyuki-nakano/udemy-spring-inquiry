@@ -1,8 +1,6 @@
 package com.example.demo.infrastructure.repository;
 
-import com.example.demo.domain.model.survey.AddSurvey;
 import com.example.demo.domain.model.survey.Survey;
-import com.example.demo.domain.model.survey.UpdateSurvey;
 import com.example.demo.domain.repository.SurveyRepository;
 import com.example.demo.infrastructure.entity.SurveyEntity;
 import com.example.demo.infrastructure.repository.jpa.SurveyJpaRepository;
@@ -39,14 +37,14 @@ public class SurveyRepositoryImpl implements SurveyRepository {
     /**
      * {@inheritDoc}
      */
-    public boolean register(AddSurvey survey) {
-        return false;
+    public void register(Survey survey) {
+        surveyJpaRepository.save(SurveyEntity.of(survey));
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean update(UpdateSurvey survey) {
+    public boolean update(Survey survey) {
         return false;
     }
 }

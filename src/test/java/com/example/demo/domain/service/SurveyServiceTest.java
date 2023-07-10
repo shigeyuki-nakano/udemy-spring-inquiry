@@ -1,14 +1,10 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.domain.exception.ResourceNotFoundException;
-import com.example.demo.domain.model.survey.AddSurvey;
 import com.example.demo.domain.model.survey.SatisfactionLevels;
 import com.example.demo.domain.model.survey.Survey;
-import com.example.demo.domain.model.survey.UpdateSurvey;
 import com.example.demo.domain.repository.SurveyRepository;
-import com.example.demo.testtools.mockbuilder.domain.model.survey.AddSurveyMockBuilder;
 import com.example.demo.testtools.mockbuilder.domain.model.survey.SurveyMockBuilder;
-import com.example.demo.testtools.mockbuilder.domain.model.survey.UpdateSurveyMockBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +15,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SurveyServiceImplTest {
+class SurveyServiceTest {
 
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
@@ -29,7 +27,7 @@ class SurveyServiceImplTest {
     @BeforeEach
     void setUp() {
         surveyRepository = mock(SurveyRepository.class);
-        surveyService = new SurveyServiceImpl(surveyRepository);
+        surveyService = new SurveyService(surveyRepository);
     }
 
     @Nested
@@ -158,27 +156,24 @@ class SurveyServiceImplTest {
     @DisplayName("method : register")
     class Register {
 
-        private AddSurvey addSurvey;
-
-        @BeforeEach
-        void setUp() {
-            addSurvey = AddSurveyMockBuilder.build();
-        }
-
         @Test
         @DisplayName("正常系: " +
                 "登録対象のアンケートを指定し実行した場合、" +
                 "アンケート登録処理が行われ、trueが返却されること")
         void case1() {
             // テスト準備
-            when(surveyRepository.register(addSurvey))
-                    .thenReturn(true);
+            final var survey = Survey.builder()
+                    .age(20)
+                    .satisfaction(SatisfactionLevels.EXTREMELY_WELL)
+                    .comment("test")
+                    .build();
 
             // 実施
-            final var actual = surveyService.register(addSurvey);
+            surveyService.register(survey);
 
             // 検証
-            Assertions.assertTrue(actual);
+            verify(surveyRepository, times(1))
+                    .register(survey);
         }
     }
 
@@ -186,24 +181,23 @@ class SurveyServiceImplTest {
     @DisplayName("method : update")
     class Update {
 
-        private UpdateSurvey updateSurvey;
-
-        @BeforeEach
-        void setUp() {
-            updateSurvey = UpdateSurveyMockBuilder.build();
-        }
-
         @Test
         @DisplayName("正常系: " +
                 "更新対象のアンケートを指定しアンケート更新を実行した場合、" +
                 "アンケート更新処理が行われ、trueが返却されること")
         void case1() {
             // テスト準備
-            when(surveyRepository.update(updateSurvey))
+            final var survey = Survey.builder()
+                    .id(1)
+                    .age(20)
+                    .satisfaction(SatisfactionLevels.EXTREMELY_WELL)
+                    .comment("test")
+                    .build();
+            when(surveyRepository.update(survey))
                     .thenReturn(true);
 
             // 実施
-            final var actual = surveyService.update(updateSurvey);
+            final var actual = surveyService.update(survey);
 
             // 検証
             Assertions.assertTrue(actual);
