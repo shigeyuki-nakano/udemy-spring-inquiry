@@ -6,6 +6,7 @@ import com.example.demo.domain.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -52,6 +53,7 @@ public class SurveyService {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public void register(Survey survey) {
         surveyRepository.register(survey);
     }
@@ -59,6 +61,7 @@ public class SurveyService {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public void update(Survey survey) {
         surveyRepository.update(survey);
     }
