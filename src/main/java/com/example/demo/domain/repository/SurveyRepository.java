@@ -35,5 +35,5 @@ public interface SurveyRepository {
      * @param survey 更新したいアンケート
      * @return 更新結果
      */
-    boolean update(Survey survey);
+    void update(Survey survey);
 }

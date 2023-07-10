@@ -25,7 +25,7 @@ public class SurveyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
     private int age;
     @NotNull
@@ -37,7 +37,7 @@ public class SurveyEntity {
         return Survey.builder()
                 .id(id)
                 .age(age)
-                .satisfaction(SatisfactionLevels.of(id))
+                .satisfaction(SatisfactionLevels.of(satisfaction))
                 .comment(comment)
                 .created(created)
                 .build();
@@ -45,6 +45,7 @@ public class SurveyEntity {
 
     public static SurveyEntity of(Survey survey) {
         return SurveyEntity.builder()
+                .id(survey.getId())
                 .age(survey.getAge())
                 .satisfaction(survey.getSatisfaction().getId())
                 .comment(survey.getComment())

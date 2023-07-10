@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Survey {
 
-    int id;
+    Integer id;
 
     @NonNull int age;
 

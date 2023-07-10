@@ -1,6 +1,5 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.survey.SatisfactionLevels;
 import com.example.demo.domain.model.survey.Survey;
 import com.example.demo.domain.repository.SurveyRepository;
@@ -90,22 +89,6 @@ class SurveyServiceTest {
             // 検証
             Assertions.assertEquals(expected, actual);
         }
-
-        @Test
-        @DisplayName("異常系: " +
-                "指定したIDをもつアンケートが存在しなかった場合、" +
-                "ResourceNotFoundExceptionが投げられること")
-        void case2() {
-            // テスト準備
-            when(surveyRepository.getById(id))
-                    .thenReturn(null);
-            final var expectedMessage = "指定されたIDをもつアンケートが見つかりませんでした。 id : " + id;
-
-            // 実施 & 検証
-            final var actual = Assertions.assertThrows(ResourceNotFoundException.class,
-                    () -> surveyService.getById(id));
-            Assertions.assertEquals(expectedMessage, actual.getMessage());
-        }
     }
 
     @Nested
@@ -193,14 +176,13 @@ class SurveyServiceTest {
                     .satisfaction(SatisfactionLevels.EXTREMELY_WELL)
                     .comment("test")
                     .build();
-            when(surveyRepository.update(survey))
-                    .thenReturn(true);
 
             // 実施
-            final var actual = surveyService.update(survey);
+            surveyService.update(survey);
 
             // 検証
-            Assertions.assertTrue(actual);
+            verify(surveyRepository, times(1))
+                    .update(survey);
         }
     }
 }

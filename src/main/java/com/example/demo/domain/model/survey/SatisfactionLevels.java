@@ -1,6 +1,5 @@
 package com.example.demo.domain.model.survey;
 
-import com.example.demo.domain.exception.InternalServerErrorException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +21,9 @@ public enum SatisfactionLevels {
     // とても良い
     VERY_WELL(4),
     // 極めて良い
-    EXTREMELY_WELL(5);
+    EXTREMELY_WELL(5),
+    // 不明
+    UNKNOWN(6);
 
     private final int id;
 
@@ -30,21 +31,23 @@ public enum SatisfactionLevels {
         return Arrays.stream(SatisfactionLevels.values())
                 .filter(satisfactionLevels -> satisfactionLevels.id == id)
                 .findFirst()
-                .orElseThrow(() -> new InternalServerErrorException("無効なidが指定されました"));
+                .orElse(SatisfactionLevels.UNKNOWN);
     }
 
     @Override
     public String toString() {
+        final var idStr = "(" + id + ")";
+
         if (id == NOT_AT_ALL_WELL.id) {
-            return "少しも良くない";
+            return "少しも良くない" + idStr;
         } else if (id == SLIGHTLY_WELL.id) {
-            return "少し良い";
+            return "少し良い" + idStr;
         } else if (id == MODERATELY_WELL.id) {
-            return "そこそこ良い";
+            return "そこそこ良い" + idStr;
         } else if (id == VERY_WELL.id) {
-            return "とても良い";
+            return "とても良い" + idStr;
         } else if (id == EXTREMELY_WELL.id) {
-            return "極めて良い";
+            return "極めて良い" + idStr;
         }
 
         return "不明";

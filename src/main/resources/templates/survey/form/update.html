@@ -10,7 +10,8 @@
 <div th:if="${isComplete}">
     更新が完了しました。
 </div>
-<form action="#" method="post" th:action="@{/survey/confirm}" th:object="${surveyUpdateRequest}">
+<form action="#" th:method="put" th:action="@{/survey/complete}" th:object="${surveyUpdateRequest}">
+    <input type="hidden" name="id" th:value="*{id}"/>
     <label for="age">年齢:</label>
     <input id="age" name="age" th:value="*{age}" type="number"><br>
     <div th:errors="*{age}" th:if="${#fields.hasErrors('age')}"></div>
@@ -24,7 +25,7 @@
     <label for="comment">コメント　:</label>
     <textarea cols="40" id="comment" name="comment" rows="3" th:field="*{comment}"></textarea><br>
     <div th:errors="*{comment}" th:if="${#fields.hasErrors('comment')}"></div>
-    <input type="submit" value="確認ページへ">
+    <input type="submit" value="更新する">
 </form>
 </body>
 </html>

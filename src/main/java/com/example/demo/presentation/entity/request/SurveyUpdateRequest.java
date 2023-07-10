@@ -1,5 +1,6 @@
 package com.example.demo.presentation.entity.request;
 
+import com.example.demo.domain.model.survey.SatisfactionLevels;
 import com.example.demo.domain.model.survey.Survey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,15 @@ public class SurveyUpdateRequest {
                 .age(survey.getAge())
                 .comment(survey.getComment())
                 .satisfaction(survey.getSatisfaction().getId())
+                .build();
+    }
+
+    public Survey convert() {
+        return Survey.builder()
+                .id(id)
+                .age(age)
+                .comment(comment)
+                .satisfaction(SatisfactionLevels.of(satisfaction))
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.infrastructure.repository;
 
+import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.survey.Survey;
 import com.example.demo.domain.repository.SurveyRepository;
 import com.example.demo.infrastructure.entity.SurveyEntity;
@@ -31,7 +32,10 @@ public class SurveyRepositoryImpl implements SurveyRepository {
      * {@inheritDoc}
      */
     public Survey getById(int id) {
-        return null;
+        final var survey = surveyJpaRepository.findById(id);
+        return survey
+                .orElseThrow(() -> new ResourceNotFoundException("指定されたIDをもつアンケートが見つかりませんでした。 id : " + id))
+                .convert();
     }
 
     /**
@@ -44,7 +48,7 @@ public class SurveyRepositoryImpl implements SurveyRepository {
     /**
      * {@inheritDoc}
      */
-    public boolean update(Survey survey) {
-        return false;
+    public void update(Survey survey) {
+        surveyJpaRepository.save(SurveyEntity.of(survey));
     }
 }

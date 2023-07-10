@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.constraints.PositiveOrZero;
@@ -107,4 +108,12 @@ public class SurveyController {
         return "redirect:/survey";
     }
 
+    @PutMapping("/complete")
+    public String complete(SurveyUpdateRequest surveyUpdateRequest, Model model) {
+        surveyService.update(surveyUpdateRequest.convert());
+
+        model.addAttribute("isComplete", true);
+
+        return "redirect:/survey";
+    }
 }
