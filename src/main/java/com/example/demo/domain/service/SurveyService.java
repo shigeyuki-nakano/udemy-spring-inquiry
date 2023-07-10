@@ -40,6 +40,8 @@ public class SurveyService {
 
         final var average = surveyList.stream()
                 .map(Survey::getSatisfaction)
+                // 満足度UNKNOWNのアンケートを平均算から除外
+                .filter(satisfactionLevels -> !SatisfactionLevels.UNKNOWN.equals(satisfactionLevels))
                 .mapToInt(SatisfactionLevels::getId)
                 .average()
                 .orElseThrow();
