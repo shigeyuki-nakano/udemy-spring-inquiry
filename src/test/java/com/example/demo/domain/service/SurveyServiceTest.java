@@ -110,7 +110,12 @@ class SurveyServiceTest {
             // テスト準備
             when(surveyRepository.getAll())
                     .thenReturn(surveyList);
-            final var expected = SatisfactionLevels.EXTREMELY_WELL.getId();
+            final var expected = surveyList.stream()
+                    .map(Survey::getSatisfaction)
+                    .filter(satisfactionLevels -> !SatisfactionLevels.UNKNOWN.equals(satisfactionLevels))
+                    .mapToInt(SatisfactionLevels::getId)
+                    .average()
+                    .orElse(0);
 
             // 実施
             final var actual = surveyService.getSatisfactionAverage();

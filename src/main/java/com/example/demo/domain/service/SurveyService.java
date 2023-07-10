@@ -1,5 +1,6 @@
 package com.example.demo.domain.service;
 
+import com.example.demo.domain.exception.InternalServerErrorException;
 import com.example.demo.domain.model.survey.SatisfactionLevels;
 import com.example.demo.domain.model.survey.Survey;
 import com.example.demo.domain.repository.SurveyRepository;
@@ -45,8 +46,9 @@ public class SurveyService {
                 .filter(satisfactionLevels -> !SatisfactionLevels.UNKNOWN.equals(satisfactionLevels))
                 .mapToInt(SatisfactionLevels::getId)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new InternalServerErrorException("満足度の平均算出に失敗しました"));
 
+        // 少数を切り捨てて返却
         return (int) Math.floor(average);
     }
 
