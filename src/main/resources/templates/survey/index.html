@@ -18,7 +18,9 @@
         <th>datetime</th>
     </tr>
     <tr th:each="survey : ${surveyList}">
-        <td th:text="${survey.id}"></td>
+        <td>
+            <a th:href="@{/survey/form/{id}(id = ${survey.id})}" th:text="${survey.id}"></a>
+        </td>
         <td th:text="${survey.age}"></td>
         <td th:text="${survey.satisfaction}"></td>
         <td th:text="${survey.comment}"></td>

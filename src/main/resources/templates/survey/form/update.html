@@ -7,14 +7,15 @@
 <body>
 <div th:replace="~{block/header::headerA}"></div>
 <h1 th:text="${title}">仮のタイトル</h1>
-<div th:if="${param.complete}">
+<div th:if="${isComplete}">
     更新が完了しました。
 </div>
-<form action="#" method="post" th:action="@{/survey/confirm}" th:object="${surveyForm}">
+<form action="#" th:method="put" th:action="@{/survey/complete}" th:object="${surveyUpdateRequest}">
+    <input type="hidden" name="id" th:value="*{id}"/>
     <label for="age">年齢:</label>
     <input id="age" name="age" th:value="*{age}" type="number"><br>
     <div th:errors="*{age}" th:if="${#fields.hasErrors('age')}"></div>
-    <label for="email">満足度:</label>
+    <label for="satisfaction">満足度:</label>
     <input name="satisfaction" th:checked="*{satisfaction == 1}" type="radio" value="1">1
     <input name="satisfaction" th:checked="*{satisfaction == 2}" type="radio" value="2">2
     <input name="satisfaction" th:checked="*{satisfaction == 3}" type="radio" value="3">3
@@ -24,7 +25,7 @@
     <label for="comment">コメント　:</label>
     <textarea cols="40" id="comment" name="comment" rows="3" th:field="*{comment}"></textarea><br>
     <div th:errors="*{comment}" th:if="${#fields.hasErrors('comment')}"></div>
-    <input type="submit" value="確認ページへ">
+    <input type="submit" value="更新する">
 </form>
 </body>
 </html>
