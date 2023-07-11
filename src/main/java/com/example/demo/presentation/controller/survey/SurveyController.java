@@ -76,21 +76,7 @@ public class SurveyController {
     @PostMapping("/confirm")
     public String confirm(
             @ModelAttribute @Validated SurveyAddRequest surveyAddRequest,
-            BindingResult bindingResult,
-            Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "error/CustomPage";
-        }
-
-        return "survey/confirm";
-    }
-
-    @PostMapping("/confirm/update")
-    public String confirm(
-            @ModelAttribute @Validated SurveyUpdateRequest surveyUpdateRequest,
-            BindingResult bindingResult,
-            Model model) {
+            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "error/CustomPage";

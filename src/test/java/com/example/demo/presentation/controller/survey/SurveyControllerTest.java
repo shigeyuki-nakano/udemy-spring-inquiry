@@ -24,8 +24,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -33,6 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles({"test"})
 class SurveyControllerTest {
+
+    private final String ERROR_404_TEMPLATE_PATH = "error/404";
+    private final String ERROR_TEMPLATE_PATH = "error/CustomPage";
 
     @Autowired
     private MockMvc mockMvc;
@@ -92,14 +100,8 @@ class SurveyControllerTest {
     @DisplayName("method : form")
     class Form {
 
-        private String templatePath;
-        private String basePath;
-
-        @BeforeEach
-        void setUp() {
-            templatePath = "survey/form/index";
-            basePath = "/survey/form";
-        }
+        private final String templatePath = "survey/form/index";
+        private final String basePath = "/survey/form";
 
         @Test
         @DisplayName("正常系: GETアクセスした場合、アンケート登録ページの取得ができること")
@@ -124,14 +126,8 @@ class SurveyControllerTest {
     @DisplayName("method : formGoBack")
     class FormGoBack {
 
-        private String templatePath;
-        private String basePath;
-
-        @BeforeEach
-        void setUp() {
-            templatePath = "survey/form/index";
-            basePath = "/survey/form";
-        }
+        private final String templatePath = "survey/form/index";
+        private final String basePath = "/survey/form";
 
         @Test
         @DisplayName("正常系: " +
@@ -147,7 +143,7 @@ class SurveyControllerTest {
 
             // 実施
             final var actual = mockMvc.perform(
-                    MockMvcRequestBuilders.post(basePath)
+                    post(basePath)
                             .param("age", String.valueOf(surveyAddRequest.getAge()))
                             .param("satisfaction", String.valueOf(surveyAddRequest.getSatisfaction()))
                             .param("comment", surveyAddRequest.getComment()));
@@ -167,18 +163,13 @@ class SurveyControllerTest {
     @DisplayName("method : updateForm")
     class UpdateForm {
 
-        private String templatePath;
-        private String errorTemplatePath;
-        private String basePath;
-        private int id;
+        private final String templatePath = "survey/form/update";
+        private final String basePath = "/survey/form";
+        private final int id = 1;
         private String path;
 
         @BeforeEach
         void setUp() {
-            templatePath = "survey/form/update";
-            errorTemplatePath = "error/404";
-            basePath = "/survey/form";
-            id = 1;
             path = basePath + "/" + id;
         }
 
@@ -220,7 +211,112 @@ class SurveyControllerTest {
             // 検証
             actual
                     .andExpect(status().isOk())
-                    .andExpect(view().name(errorTemplatePath));
+                    .andExpect(view().name(ERROR_404_TEMPLATE_PATH));
+        }
+    }
+
+    @Nested
+    @DisplayName("method : confirm")
+    class Confirm {
+
+        private final String templatePath = "survey/confirm";
+        private final String basePath = "/survey/confirm";
+
+        @Test
+        @DisplayName("正常系: confirmページが返却されること")
+        void case1() throws Exception {
+            // テスト準備
+            final var age = 20;
+            final var satisfaction = 1;
+            final var comment = "test";
+
+            // 実施 & 検証
+            mockMvc.perform(
+                            post(basePath)
+                                    .param("age", String.valueOf(age))
+                                    .param("satisfaction", String.valueOf(satisfaction))
+                                    .param("comment", comment))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name(templatePath));
+        }
+
+        @Test
+        @DisplayName("異常系: 不正な値がpostされた場合、エラーページが返却されること")
+        void case2() throws Exception {
+            // テスト準備
+            final var age = 20;
+            // 満足度が不正
+            final var satisfaction = 0;
+            final var comment = "test";
+
+            // 実施 & 検証
+            mockMvc.perform(
+                            post(basePath)
+                                    .param("age", String.valueOf(age))
+                                    .param("satisfaction", String.valueOf(satisfaction))
+                                    .param("comment", comment))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name(ERROR_TEMPLATE_PATH));
+        }
+    }
+
+    @Nested
+    @DisplayName("method : complete")
+    class Complete {
+
+        private final String basePath = "/survey/complete";
+
+        @Test
+        @DisplayName("正常系: postリクエストをすると、登録処理が行われ一覧ページにリダイレクトすること")
+        void case1() throws Exception {
+            // テスト準備
+            final var age = 20;
+            final var satisfaction = 1;
+            final var comment = "test";
+
+            // 実施 & 検証
+            mockMvc.perform(
+                            post(basePath)
+                                    .param("age", String.valueOf(age))
+                                    .param("satisfaction", String.valueOf(satisfaction))
+                                    .param("comment", comment))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl("/survey?isComplete=true"))
+                    .andExpect(model().attribute("isComplete", true));
+            verify(surveyService, times(1))
+                    .register(Survey.builder()
+                            .age(age)
+                            .satisfaction(SatisfactionLevels.of(satisfaction))
+                            .comment(comment)
+                            .build());
+        }
+
+        @Test
+        @DisplayName("正常系: putリクエストをすると、更新処理が行われ一覧ページにリダイレクトすること")
+        void case2() throws Exception {
+            // テスト準備
+            final var id = 1;
+            final var age = 20;
+            final var satisfaction = 1;
+            final var comment = "test";
+
+            // 実施 & 検証
+            mockMvc.perform(
+                            put(basePath)
+                                    .param("id", String.valueOf(id))
+                                    .param("age", String.valueOf(age))
+                                    .param("satisfaction", String.valueOf(satisfaction))
+                                    .param("comment", comment))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl("/survey?isComplete=true"))
+                    .andExpect(model().attribute("isComplete", true));
+            verify(surveyService, times(1))
+                    .update(Survey.builder()
+                            .id(id)
+                            .age(age)
+                            .satisfaction(SatisfactionLevels.of(satisfaction))
+                            .comment(comment)
+                            .build());
         }
     }
 }
