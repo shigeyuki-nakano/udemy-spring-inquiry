@@ -1,9 +1,7 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.domain.exception.ResourceNotFoundException;
-import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.repository.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ public class InquiryService {
      * {@inheritDoc}
      */
     @Transactional
-    public void register(AddInquiry inquiry) {
+    public void register(Inquiry inquiry) {
         repository.register(inquiry);
     }
 
@@ -32,7 +30,7 @@ public class InquiryService {
      * {@inheritDoc}
      */
     @Transactional
-    public void update(UpdateInquiry inquiry) {
+    public void update(Inquiry inquiry) {
         repository.update(inquiry);
     }
 

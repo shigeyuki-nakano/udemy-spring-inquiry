@@ -1,15 +1,11 @@
 package com.example.demo.infrastructure.repository;
 
 import com.example.demo.domain.exception.ResourceNotFoundException;
-import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.repository.InquiryRepository;
 import com.example.demo.infrastructure.entity.InquiryEntity;
 import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
-import com.example.demo.testtools.mockbuilder.domain.model.inquiry.AddInquiryMockBuilder;
 import com.example.demo.testtools.mockbuilder.domain.model.inquiry.InquiryMockBuilder;
-import com.example.demo.testtools.mockbuilder.domain.model.inquiry.UpdateInquiryMockBuilder;
 import com.example.demo.testtools.mockbuilder.infrastructure.entity.InquiryEntityMockBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,10 +42,10 @@ public class InquiryRepositoryImplTest {
         @DisplayName("正常系: 例外なく処理が終了すること")
         void case1() {
             // テスト準備
-            final AddInquiry addInquiry = AddInquiryMockBuilder.build();
+            final Inquiry inquiry = InquiryMockBuilder.build();
 
             // 実施
-            inquiryRepository.register(addInquiry);
+            inquiryRepository.register(inquiry);
 
             // 検証
             verify(inquiryJpaRepository, times(1))
@@ -61,19 +57,19 @@ public class InquiryRepositoryImplTest {
     @DisplayName("method : update")
     class Update {
 
-        private final UpdateInquiry updateInquiry = UpdateInquiryMockBuilder.build();
-        private final InquiryEntity inquiryEntity = InquiryEntity.of(updateInquiry);
+        private final Inquiry inquiry = InquiryMockBuilder.build();
+        private final InquiryEntity inquiryEntity = InquiryEntity.of(inquiry);
 
         @Test
         @DisplayName("正常系: 更新結果が存在する場合は1を返すこと")
         void case1() {
             // テスト準備
             final var entity = InquiryEntityMockBuilder.build();
-            when(inquiryJpaRepository.findById(updateInquiry.getId()))
+            when(inquiryJpaRepository.findById(inquiry.getId()))
                     .thenReturn(Optional.of(entity));
 
             // 実施
-            inquiryRepository.update(updateInquiry);
+            inquiryRepository.update(inquiry);
 
             // 検証
             verify(inquiryJpaRepository, times(1))
@@ -84,12 +80,12 @@ public class InquiryRepositoryImplTest {
         @DisplayName("異常系: 更新結果が存在しない場合は例外が発生すること")
         void case2() {
             // テスト準備
-            when(inquiryJpaRepository.findById(updateInquiry.getId()))
+            when(inquiryJpaRepository.findById(inquiry.getId()))
                     .thenReturn(Optional.empty());
 
             // 実施 & 検証
             Assertions.assertThrows(ResourceNotFoundException.class,
-                    () -> inquiryRepository.update(updateInquiry));
+                    () -> inquiryRepository.update(inquiry));
         }
     }
 

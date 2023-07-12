@@ -1,5 +1,6 @@
 package com.example.demo.presentation.entity.request;
 
+import com.example.demo.domain.model.inquiry.Inquiry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,22 @@ public class InquiryUpdateRequest {
     private String email;
     @NotNull
     private String contents;
+
+    public static InquiryUpdateRequest of(Inquiry inquiry) {
+        return InquiryUpdateRequest.builder()
+                .id(inquiry.getId())
+                .name(inquiry.getName())
+                .email(inquiry.getEmail())
+                .contents(inquiry.getContents())
+                .build();
+    }
+
+    public Inquiry convert() {
+        return Inquiry.builder()
+                .id(id)
+                .name(name)
+                .email(email)
+                .contents(contents)
+                .build();
+    }
 }

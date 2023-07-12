@@ -1,8 +1,6 @@
 package com.example.demo.domain.repository;
 
-import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +15,7 @@ public interface InquiryRepository {
      *
      * @param inquiry 対象のお問合せ内容
      */
-    void register(AddInquiry inquiry);
+    void register(Inquiry inquiry);
 
     /**
      * お問合せ内容の更新
@@ -25,7 +23,7 @@ public interface InquiryRepository {
      * @param inquiry 対象のお問合せ内容
      * @return 更新した数
      */
-    void update(UpdateInquiry inquiry);
+    void update(Inquiry inquiry);
 
     /**
      * 保存してある全てのお問合せ内容を取得する

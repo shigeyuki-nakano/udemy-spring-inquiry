@@ -1,9 +1,7 @@
 package com.example.demo.infrastructure.repository;
 
 import com.example.demo.domain.exception.ResourceNotFoundException;
-import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.repository.InquiryRepository;
 import com.example.demo.infrastructure.entity.InquiryEntity;
 import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
@@ -24,7 +22,7 @@ public class InquiryRepositoryImpl implements InquiryRepository {
      * {@inheritDoc}
      */
     @Override
-    public void register(AddInquiry inquiry) {
+    public void register(Inquiry inquiry) {
         final var inquiryEntity = InquiryEntity.of(inquiry);
         inquiryJpaRepository.save(inquiryEntity);
     }
@@ -33,7 +31,7 @@ public class InquiryRepositoryImpl implements InquiryRepository {
      * {@inheritDoc}
      */
     @Override
-    public void update(UpdateInquiry inquiry) {
+    public void update(Inquiry inquiry) {
         inquiryJpaRepository.findById(inquiry.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("更新対象のお問合せが見つかりませんでした。"));
 

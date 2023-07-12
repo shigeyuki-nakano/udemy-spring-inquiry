@@ -1,7 +1,5 @@
 package com.example.demo.presentation.controller.inquiry;
 
-import com.example.demo.domain.model.inquiry.AddInquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.service.InquiryService;
 import com.example.demo.presentation.entity.request.InquiryAddRequest;
 import com.example.demo.presentation.entity.request.InquiryUpdateRequest;
@@ -55,7 +53,7 @@ public class InquiryController {
 
         model
                 .addAttribute("title", "お問合せ")
-                .addAttribute("inquiryUpdateRequest", UpdateInquiry.of(inquiry));
+                .addAttribute("inquiryUpdateRequest", InquiryUpdateRequest.of(inquiry));
         return "inquiry/form/update";
     }
 
@@ -85,7 +83,7 @@ public class InquiryController {
 
     @PostMapping("/complete")
     public String complete(InquiryAddRequest inquiryAddRequest, Model model) {
-        inquiryService.register(AddInquiry.of(inquiryAddRequest));
+        inquiryService.register(inquiryAddRequest.convert());
 
         model
                 .addAttribute("isComplete", true);
@@ -95,7 +93,7 @@ public class InquiryController {
 
     @PutMapping("/complete")
     public String updateComplete(InquiryUpdateRequest inquiryUpdateRequest, Model model) {
-        inquiryService.update(UpdateInquiry.of(inquiryUpdateRequest));
+        inquiryService.update(inquiryUpdateRequest.convert());
 
         model
                 .addAttribute("isComplete", true);
