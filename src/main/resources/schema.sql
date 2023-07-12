@@ -17,11 +17,3 @@ CREATE TABLE IF NOT EXISTS survey
     created      DATETIME NOT NULL,
     PRIMARY KEY (id)
 );
-
-CREATE TABLE IF NOT EXISTS test_tbl
-(
-    id       INT          NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    age      INT,
-    PRIMARY KEY (id)
-);
