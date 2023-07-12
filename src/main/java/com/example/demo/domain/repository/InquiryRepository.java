@@ -17,7 +17,7 @@ public interface InquiryRepository {
      *
      * @param inquiry 対象のお問合せ内容
      */
-    void insertInquiry(AddInquiry inquiry);
+    void register(AddInquiry inquiry);
 
     /**
      * お問合せ内容の更新
@@ -25,14 +25,14 @@ public interface InquiryRepository {
      * @param inquiry 対象のお問合せ内容
      * @return 更新した数
      */
-    int updateInquiry(UpdateInquiry inquiry);
+    void update(UpdateInquiry inquiry);
 
     /**
      * 保存してある全てのお問合せ内容を取得する
      *
      * @return 全てのお問合せ内容
      */
-    List<Inquiry> getAll();
+    List<Inquiry> findAll();
 
     /**
      * 指定されたIDのお問合せ内容を取得する
@@ -40,5 +40,5 @@ public interface InquiryRepository {
      * @param id 取得したいお問合せ内容のID
      * @return お問合せ内容
      */
-    Optional<Inquiry> getById(int id);
+    Optional<Inquiry> findById(int id);
 }

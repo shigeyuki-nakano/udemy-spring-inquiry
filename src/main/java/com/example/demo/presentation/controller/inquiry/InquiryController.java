@@ -29,7 +29,7 @@ public class InquiryController {
 
     @GetMapping
     public String index(Model model) {
-        final var inquiryList = inquiryService.getAll();
+        final var inquiryList = inquiryService.findAll();
 
         model
                 .addAttribute("title", "お問合せ")
@@ -51,7 +51,7 @@ public class InquiryController {
             @PathVariable("id")
             @PositiveOrZero Integer id,
             Model model) {
-        final var inquiry = inquiryService.get(id);
+        final var inquiry = inquiryService.findById(id);
 
         model
                 .addAttribute("title", "お問合せ")
@@ -85,7 +85,7 @@ public class InquiryController {
 
     @PostMapping("/complete")
     public String complete(InquiryAddRequest inquiryAddRequest, Model model) {
-        inquiryService.save(AddInquiry.of(inquiryAddRequest));
+        inquiryService.register(AddInquiry.of(inquiryAddRequest));
 
         model
                 .addAttribute("isComplete", true);

@@ -27,7 +27,7 @@ public class SurveyController {
 
     @GetMapping
     public String index(Model model) {
-        final var surveyList = surveyService.getAll();
+        final var surveyList = surveyService.findAll();
         final var satisfactionAverage = surveyService.getSatisfactionAverage();
 
         model
@@ -61,7 +61,7 @@ public class SurveyController {
             @PathVariable @PositiveOrZero Integer id,
             Model model) {
 
-        final var survey = surveyService.getById(id);
+        final var survey = surveyService.findById(id);
         final var surveyUpdateRequest = SurveyUpdateRequest.of(survey);
 
         model

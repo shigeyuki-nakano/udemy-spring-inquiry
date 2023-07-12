@@ -1,5 +1,6 @@
 package com.example.demo.infrastructure.repository;
 
+import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.inquiry.AddInquiry;
 import com.example.demo.domain.model.inquiry.Inquiry;
 import com.example.demo.domain.model.inquiry.UpdateInquiry;
@@ -9,6 +10,7 @@ import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
 import com.example.demo.testtools.mockbuilder.domain.model.inquiry.AddInquiryMockBuilder;
 import com.example.demo.testtools.mockbuilder.domain.model.inquiry.InquiryMockBuilder;
 import com.example.demo.testtools.mockbuilder.domain.model.inquiry.UpdateInquiryMockBuilder;
+import com.example.demo.testtools.mockbuilder.infrastructure.entity.InquiryEntityMockBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,29 +39,27 @@ public class InquiryRepositoryImplTest {
     }
 
     @Nested
-    @DisplayName("method : insertInquiry")
-    class InsertInquiry {
-
-        private final AddInquiry addInquiry = AddInquiryMockBuilder.build();
-        private final InquiryEntity inquiryEntity = InquiryEntity.of(addInquiry);
+    @DisplayName("method : register")
+    class Register {
 
         @Test
         @DisplayName("正常系: 例外なく処理が終了すること")
         void case1() {
             // テスト準備
+            final AddInquiry addInquiry = AddInquiryMockBuilder.build();
 
             // 実施
-            inquiryRepository.insertInquiry(addInquiry);
+            inquiryRepository.register(addInquiry);
 
             // 検証
             verify(inquiryJpaRepository, times(1))
-                    .save(inquiryEntity);
+                    .save(any(InquiryEntity.class));
         }
     }
 
     @Nested
-    @DisplayName("method : updateInquiry")
-    class UpdateInquiryTest {
+    @DisplayName("method : update")
+    class Update {
 
         private final UpdateInquiry updateInquiry = UpdateInquiryMockBuilder.build();
         private final InquiryEntity inquiryEntity = InquiryEntity.of(updateInquiry);
@@ -67,40 +68,34 @@ public class InquiryRepositoryImplTest {
         @DisplayName("正常系: 更新結果が存在する場合は1を返すこと")
         void case1() {
             // テスト準備
-            when(inquiryJpaRepository.existsById(updateInquiry.getId()))
-                    .thenReturn(true);
-            final var expectedResultCount = 1;
+            final var entity = InquiryEntityMockBuilder.build();
+            when(inquiryJpaRepository.findById(updateInquiry.getId()))
+                    .thenReturn(Optional.of(entity));
 
             // 実施
-            final var actual = inquiryRepository.updateInquiry(updateInquiry);
+            inquiryRepository.update(updateInquiry);
 
             // 検証
             verify(inquiryJpaRepository, times(1))
                     .save(inquiryEntity);
-            Assertions.assertEquals(expectedResultCount, actual);
         }
 
         @Test
-        @DisplayName("正常系: 更新結果が存在しない場合は0を返すこと")
+        @DisplayName("異常系: 更新結果が存在しない場合は例外が発生すること")
         void case2() {
             // テスト準備
-            when(inquiryJpaRepository.existsById(updateInquiry.getId()))
-                    .thenReturn(false);
-            final var expectedResultCount = 0;
+            when(inquiryJpaRepository.findById(updateInquiry.getId()))
+                    .thenReturn(Optional.empty());
 
-            // 実施
-            final var actual = inquiryRepository.updateInquiry(updateInquiry);
-
-            // 検証
-            verify(inquiryJpaRepository, times(1))
-                    .save(inquiryEntity);
-            Assertions.assertEquals(expectedResultCount, actual);
+            // 実施 & 検証
+            Assertions.assertThrows(ResourceNotFoundException.class,
+                    () -> inquiryRepository.update(updateInquiry));
         }
     }
 
     @Nested
-    @DisplayName("method : getAll")
-    class GetAll {
+    @DisplayName("method : findAll")
+    class FindAll {
 
         private final List<Inquiry> inquiryList = InquiryMockBuilder.buildOfList();
         private final List<InquiryEntity> inquiryEntityList = inquiryList.stream()
@@ -115,7 +110,7 @@ public class InquiryRepositoryImplTest {
                     .thenReturn(inquiryEntityList);
 
             // 実施
-            final var actual = inquiryRepository.getAll();
+            final var actual = inquiryRepository.findAll();
 
             // 検証
             Assertions.assertEquals(inquiryList, actual);
@@ -123,8 +118,8 @@ public class InquiryRepositoryImplTest {
     }
 
     @Nested
-    @DisplayName("method : getById")
-    class GetById {
+    @DisplayName("method : findById")
+    class FindById {
 
         private final int id = 1;
         private final Inquiry inquiry = InquiryMockBuilder.build();
@@ -138,7 +133,7 @@ public class InquiryRepositoryImplTest {
                     .thenReturn(Optional.of(inquiryEntity));
 
             // 実施
-            final var actual = inquiryRepository.getById(id);
+            final var actual = inquiryRepository.findById(id);
 
             // 検証
             Assertions.assertEquals(Optional.of(inquiry), actual);

@@ -30,8 +30,8 @@ class SurveyServiceTest {
     }
 
     @Nested
-    @DisplayName("method : getAll")
-    class GetAll {
+    @DisplayName("method : findAll")
+    class FindAll {
 
         private List<Survey> surveyList;
         private List<Survey> emptySurveyList;
@@ -48,12 +48,12 @@ class SurveyServiceTest {
                 "アンケート一覧取得処理が行われ、アンケート一覧を返却すること")
         void case1() {
             // テスト準備
-            when(surveyRepository.getAll())
+            when(surveyRepository.findAll())
                     .thenReturn(surveyList);
             final var expected = surveyList;
 
             // 実施
-            final var actual = surveyService.getAll();
+            final var actual = surveyService.findAll();
 
             // 検証
             Assertions.assertEquals(expected, actual);
@@ -61,8 +61,8 @@ class SurveyServiceTest {
     }
 
     @Nested
-    @DisplayName("method : getById")
-    class GetById {
+    @DisplayName("method : findById")
+    class FindById {
 
         private int id;
         private Survey survey;
@@ -79,12 +79,12 @@ class SurveyServiceTest {
                 "IDを元にアンケート検索・取得処理が行われ、アンケートが返却されること")
         void case1() {
             // テスト準備
-            when(surveyRepository.getById(id))
+            when(surveyRepository.findById(id))
                     .thenReturn(survey);
             final var expected = survey;
 
             // 実施
-            final var actual = surveyService.getById(id);
+            final var actual = surveyService.findById(id);
 
             // 検証
             Assertions.assertEquals(expected, actual);
@@ -108,7 +108,7 @@ class SurveyServiceTest {
         @DisplayName("正常系: アンケート一覧取得処理が行われ、それを元に集計した平均満足度が返却されること")
         void case1() {
             // テスト準備
-            when(surveyRepository.getAll())
+            when(surveyRepository.findAll())
                     .thenReturn(surveyList);
             final var expected = surveyList.stream()
                     .map(Survey::getSatisfaction)
@@ -128,7 +128,7 @@ class SurveyServiceTest {
         @DisplayName("準正常系: アンケート一覧取得結果が空であった場合、0が返却されること")
         void case2() {
             // テスト準備
-            when(surveyRepository.getAll())
+            when(surveyRepository.findAll())
                     .thenReturn(emptySurveyList);
             final var expected = 0;
 

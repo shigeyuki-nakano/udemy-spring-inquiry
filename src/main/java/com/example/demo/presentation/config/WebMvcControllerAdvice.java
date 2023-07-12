@@ -2,7 +2,6 @@ package com.example.demo.presentation.config;
 
 import com.example.demo.domain.exception.ResourceNotFoundException;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,15 +19,15 @@ public class WebMvcControllerAdvice {
         dataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public String handleException(EmptyResultDataAccessException e, Model model) {
-        model.addAttribute("message", e);
-        return "error/CustomPage";
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public String handleException(ResourceNotFoundException e, Model model) {
         model.addAttribute("message", e);
         return "error/404";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e, Model model) {
+        model.addAttribute("message", e);
+        return "error/CustomPage";
     }
 }

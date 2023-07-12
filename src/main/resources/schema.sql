@@ -1,4 +1,4 @@
-CREATE TABLE inquiry
+CREATE TABLE IF NOT EXISTS inquiry
 (
     id       INT          NOT NULL AUTO_INCREMENT,
     name     VARCHAR(100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE inquiry
     PRIMARY KEY (id)
 );
 
-CREATE TABLE survey
+CREATE TABLE IF NOT EXISTS survey
 (
     id           INT      NOT NULL AUTO_INCREMENT,
     age          INT      NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE survey
     PRIMARY KEY (id)
 );
 
-CREATE TABLE test_tbl
+CREATE TABLE IF NOT EXISTS test_tbl
 (
     id       INT          NOT NULL AUTO_INCREMENT,
     username varchar(255) NOT NULL,
