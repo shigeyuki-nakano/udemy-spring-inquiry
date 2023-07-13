@@ -19,22 +19,22 @@ public class SurveyService {
     /**
      * {@inheritDoc}
      */
-    public List<Survey> getAll() {
-        return surveyRepository.getAll();
+    public List<Survey> findAll() {
+        return surveyRepository.findAll();
     }
 
     /**
      * {@inheritDoc}
      */
-    public Survey getById(int id) {
-        return surveyRepository.getById(id);
+    public Survey findById(int id) {
+        return surveyRepository.findById(id);
     }
 
     /**
      * {@inheritDoc}
      */
     public int getSatisfactionAverage() {
-        final var surveyList = surveyRepository.getAll();
+        final var surveyList = surveyRepository.findAll();
 
         if (surveyList.isEmpty()) {
             return 0;

@@ -1,7 +1,5 @@
 package com.example.demo.presentation.controller.inquiry;
 
-import com.example.demo.domain.model.inquiry.AddInquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.service.InquiryService;
 import com.example.demo.presentation.entity.request.InquiryAddRequest;
 import com.example.demo.presentation.entity.request.InquiryUpdateRequest;
@@ -29,7 +27,7 @@ public class InquiryController {
 
     @GetMapping
     public String index(Model model) {
-        final var inquiryList = inquiryService.getAll();
+        final var inquiryList = inquiryService.findAll();
 
         model
                 .addAttribute("title", "お問合せ")
@@ -51,11 +49,11 @@ public class InquiryController {
             @PathVariable("id")
             @PositiveOrZero Integer id,
             Model model) {
-        final var inquiry = inquiryService.get(id);
+        final var inquiry = inquiryService.findById(id);
 
         model
                 .addAttribute("title", "お問合せ")
-                .addAttribute("inquiryUpdateRequest", UpdateInquiry.of(inquiry));
+                .addAttribute("inquiryUpdateRequest", InquiryUpdateRequest.of(inquiry));
         return "inquiry/form/update";
     }
 
@@ -85,7 +83,7 @@ public class InquiryController {
 
     @PostMapping("/complete")
     public String complete(InquiryAddRequest inquiryAddRequest, Model model) {
-        inquiryService.save(AddInquiry.of(inquiryAddRequest));
+        inquiryService.register(inquiryAddRequest.convert());
 
         model
                 .addAttribute("isComplete", true);
@@ -95,7 +93,7 @@ public class InquiryController {
 
     @PutMapping("/complete")
     public String updateComplete(InquiryUpdateRequest inquiryUpdateRequest, Model model) {
-        inquiryService.update(UpdateInquiry.of(inquiryUpdateRequest));
+        inquiryService.update(inquiryUpdateRequest.convert());
 
         model
                 .addAttribute("isComplete", true);

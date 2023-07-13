@@ -11,7 +11,7 @@ public interface SurveyRepository {
      *
      * @return アンケート一覧
      */
-    List<Survey> getAll();
+    List<Survey> findAll();
 
     /**
      * 指定されたIDのアンケートを取得する
@@ -19,7 +19,7 @@ public interface SurveyRepository {
      * @param id 取得したいアンケートのID
      * @return アンケート
      */
-    Survey getById(int id);
+    Survey findById(int id);
 
     /**
      * 指定したアンケートを登録する

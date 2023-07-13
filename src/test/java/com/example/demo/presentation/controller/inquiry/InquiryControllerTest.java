@@ -56,7 +56,7 @@ public class InquiryControllerTest {
         void case1() throws Exception {
             // テスト準備
             final var inquiryList = Collections.singletonList(InquiryMockBuilder.build());
-            when(inquiryService.getAll())
+            when(inquiryService.findAll())
                     .thenReturn(inquiryList);
 
 

@@ -1,43 +1,48 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.domain.model.inquiry.AddInquiry;
+import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
+import com.example.demo.domain.repository.InquiryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * お問合せ関連ビジネスロジッククラス
+ * {@inheritDoc}
  */
-public interface InquiryService {
+@Service
+@RequiredArgsConstructor
+public class InquiryService {
+
+    private final InquiryRepository repository;
 
     /**
-     * お問合せの保存を行う
-     *
-     * @param inquiry お問合せ内容
+     * {@inheritDoc}
      */
-    void save(AddInquiry inquiry);
+    @Transactional
+    public void register(Inquiry inquiry) {
+        repository.register(inquiry);
+    }
 
     /**
-     * お問合せ内容の更新を行う
-     *
-     * @param inquiry お問合せ内容
+     * {@inheritDoc}
      */
-    void update(UpdateInquiry inquiry);
+    @Transactional
+    public void update(Inquiry inquiry) {
+        repository.update(inquiry);
+    }
 
     /**
-     * 全お問合せ内容を取得する
-     *
-     * @return 全お問合せ内容
+     * {@inheritDoc}
      */
-    List<Inquiry> getAll();
+    public List<Inquiry> findAll() {
+        return repository.findAll();
+    }
 
-    /**
-     * 指定したIDのお問合せ内容を取得する
-     *
-     * @param id 取得したいお問合せ内容のID
-     * @return お問合せ内容
-     */
-    Inquiry get(int id);
-
+    public Inquiry findById(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("指定されたお問い合わせが見つかりませんでした"));
+    }
 }

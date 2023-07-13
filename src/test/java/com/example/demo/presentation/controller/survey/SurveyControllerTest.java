@@ -78,7 +78,7 @@ class SurveyControllerTest {
                 "アンケート一覧ページが返却されること")
         void case1() throws Exception {
             // テスト準備
-            when(surveyService.getAll())
+            when(surveyService.findAll())
                     .thenReturn(surveyList);
             when(surveyService.getSatisfactionAverage())
                     .thenReturn(satisfactionAverage);
@@ -181,7 +181,7 @@ class SurveyControllerTest {
         void case1() throws Exception {
             // テスト準備
             final var survey = SurveyMockBuilder.buildByIndex(id);
-            when(surveyService.getById(id))
+            when(surveyService.findById(id))
                     .thenReturn(survey);
             final var surveyUpdateRequest = SurveyUpdateRequest.of(survey);
 
@@ -202,7 +202,7 @@ class SurveyControllerTest {
                 "IDを含んだパスにGETしたがアンケートが見つからなかった場合、404ページを返却すること")
         void case2() throws Exception {
             // テスト準備
-            when(surveyService.getById(id))
+            when(surveyService.findById(id))
                     .thenThrow(ResourceNotFoundException.class);
 
             // 実施

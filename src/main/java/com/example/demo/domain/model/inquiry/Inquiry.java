@@ -1,9 +1,9 @@
 package com.example.demo.domain.model.inquiry;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 public class Inquiry {
 
     int id;
-    @NotNull
+    @NonNull
     String name;
-    @NotNull
+    @NonNull
     String email;
-    @NotNull
+    @NonNull
     String contents;
     LocalDateTime created;
 }

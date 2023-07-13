@@ -20,7 +20,7 @@ public class SurveyRepositoryImpl implements SurveyRepository {
     /**
      * {@inheritDoc}
      */
-    public List<Survey> getAll() {
+    public List<Survey> findAll() {
         final var surveyList = surveyJpaRepository.findAll();
 
         return surveyList.stream()
@@ -31,7 +31,7 @@ public class SurveyRepositoryImpl implements SurveyRepository {
     /**
      * {@inheritDoc}
      */
-    public Survey getById(int id) {
+    public Survey findById(int id) {
         final var survey = surveyJpaRepository.findById(id);
         return survey
                 .orElseThrow(() -> new ResourceNotFoundException("指定されたIDをもつアンケートが見つかりませんでした。 id : " + id))
@@ -49,6 +49,9 @@ public class SurveyRepositoryImpl implements SurveyRepository {
      * {@inheritDoc}
      */
     public void update(Survey survey) {
+        surveyJpaRepository.findById(survey.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("更新対象のアンケートが見つかりませんでした。"));
+
         surveyJpaRepository.save(SurveyEntity.of(survey));
     }
 }

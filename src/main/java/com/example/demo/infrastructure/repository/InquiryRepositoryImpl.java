@@ -1,8 +1,7 @@
 package com.example.demo.infrastructure.repository;
 
-import com.example.demo.domain.model.inquiry.AddInquiry;
+import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.inquiry.Inquiry;
-import com.example.demo.domain.model.inquiry.UpdateInquiry;
 import com.example.demo.domain.repository.InquiryRepository;
 import com.example.demo.infrastructure.entity.InquiryEntity;
 import com.example.demo.infrastructure.repository.jpa.InquiryJpaRepository;
@@ -23,7 +22,7 @@ public class InquiryRepositoryImpl implements InquiryRepository {
      * {@inheritDoc}
      */
     @Override
-    public void insertInquiry(AddInquiry inquiry) {
+    public void register(Inquiry inquiry) {
         final var inquiryEntity = InquiryEntity.of(inquiry);
         inquiryJpaRepository.save(inquiryEntity);
     }
@@ -32,20 +31,18 @@ public class InquiryRepositoryImpl implements InquiryRepository {
      * {@inheritDoc}
      */
     @Override
-    public int updateInquiry(UpdateInquiry inquiry) {
-        final var inquiryEntity = InquiryEntity.of(inquiry);
+    public void update(Inquiry inquiry) {
+        inquiryJpaRepository.findById(inquiry.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("更新対象のお問合せが見つかりませんでした。"));
 
-        inquiryJpaRepository.save(inquiryEntity);
-        final var isSuccess = inquiryJpaRepository.existsById(inquiryEntity.getId());
-
-        return isSuccess ? 1 : 0;
+        inquiryJpaRepository.save(InquiryEntity.of(inquiry));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Inquiry> getAll() {
+    public List<Inquiry> findAll() {
         final var result = inquiryJpaRepository.findAll();
 
         return result.stream()
@@ -56,7 +53,7 @@ public class InquiryRepositoryImpl implements InquiryRepository {
     /**
      * {@inheritDoc}
      */
-    public Optional<Inquiry> getById(int id) {
+    public Optional<Inquiry> findById(int id) {
         final var result = inquiryJpaRepository.findById(id);
 
         return result.map(InquiryEntity::convert);
